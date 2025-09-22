@@ -1,16 +1,17 @@
-/* Global Styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ============ RESET & GLOBALS ============ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  min-height: 100%;
 }
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background-color: #f2f2f2; /* helles App-Background */
   color: #333;
   line-height: 1.6;
-  min-height: 100vh;
+  /* Platz für fixed Footer, falls aktiv (kannst du entfernen, wenn Footer nicht fixed ist) */
+  padding-bottom: 100px;
 }
 
 .container {
@@ -20,39 +21,44 @@ body {
   padding: 1rem;
 }
 
-header {
-  background-color: #ff6f61; /* Einheitliches Orange */
-  color: white;
-  padding: 1rem 0;
-}
-
+/* Sektionen-Headline */
 .main-content h2 {
   text-align: center;
   margin: 2rem 0;
-  color: #ff6f61; /* Einheitliche Akzentfarbe */
+  color: #ff6f61;
 }
 
-/* Navbar */
-.navbar {
-  background-color: #ff6f61;
-  color: white;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+/* ===== NAVBAR: Outer = volle Breite + Hintergrund, Inner = Content-Breite ===== */
+.navbar-outer {
   position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;                 /* echter Vollbreiten-Balken */
+  background-color: #ff6f61;   /* Hintergrund liegt hier */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
   z-index: 1000;
 }
 
-.navbar h1 {
+.navbar-inner {
+  max-width: 1200px;           /* Content hübsch zentrieren */
+  margin: 0 auto;
+  padding: 1rem 2rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;                 /* Textfarbe hier setzen */
+}
+
+.navbar-inner h1 {
   font-size: 1.8rem;
   font-weight: bold;
   margin: 0;
   white-space: nowrap;
 }
 
+/* Desktop-Links */
 .nav-links {
   list-style: none;
   display: flex;
@@ -62,86 +68,87 @@ header {
 }
 
 .nav-links a {
-  color: white;
+  color: #fff;
   text-decoration: none;
   font-weight: bold;
   font-size: 1rem;
   transition: color 0.3s ease;
 }
+.nav-links a:hover { color: #ffe5b4; }
 
-.nav-links a:hover {
-  color: #ffe5b4;
-}
-
+/* Burger */
 .navbar-toggler {
   display: none;
   font-size: 1.5rem;
   background: none;
   border: none;
-  color: white;
+  color: #fff;
   cursor: pointer;
 }
 
-/* Mobile Navigation */
+/* Mobile-Menü (default versteckt) */
 .nav-links-mobile {
   display: none;
   flex-direction: column;
   gap: 1rem;
-  background-color: #ff6f61;
+
+  /* gleiche Breite wie der Inhalt, nicht volle Viewport-Breite */
+  width: 100%;
+  margin-top: 0.75rem;
   padding: 1rem;
-  border-radius: 5px;
-  margin-top: 1rem;
-}
 
-.nav-links-mobile.show {
-  display: flex;
+  background-color: rgba(0,0,0,0.1); /* leichte Abdunkelung über dem Navbar-Orange */
+  border-radius: 8px;
 }
-
+.nav-links-mobile.show { display: flex; }
 .nav-links-mobile a {
-  color: white;
+  color: #fff;
   text-decoration: none;
   font-size: 1.2rem;
 }
 
-/* Page Backgrounds */
+/* Breakpoint */
+@media (max-width: 992px) {
+  .navbar-toggler { display: block; }
+  .nav-links { display: none; }
+}
+
+/* ============ SEITEN-HINTERGRÜNDE ============ */
 .home {
-  background-color: #fff7e6; /* Warmes Beige */
+  background-color: #fff7e6;
   text-align: justify;
   padding: 2rem;
 }
 
-.gallery-container {
-  background-color: #e8f8f5; /* Pastellgrün */
-  padding: 4rem 2rem;
-}
-
 .about-us {
-  background-color: #f7f7f7; /* Leicht hellgrau */
-  padding: 4rem 2rem;
+  background-color: #f9f9f9;
+  padding: 40px 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  color: #333;
 }
 
+/* Cart-Karten-Container */
 .cart-container {
-  background-color: #f0f9ff; /* Helles Blau */
+  background-color: #f0f9ff;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-/* Galerie-Container */
+
+/* ============ GALLERY (einheitlich, ohne Duplikate) ============ */
 .gallery-container {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #000; /* Schwarzer Hintergrund */
+  background-color: #000;
   color: #fff;
 }
 
-/* Grid für Bilder und Videos */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Flexibles Raster */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 15px;
   width: 100%;
   max-width: 1200px;
@@ -154,34 +161,26 @@ header {
   border-radius: 10px;
   overflow: hidden;
 }
+.gallery-item:hover { transform: scale(1.05); }
 
-/* Stil für Bilder und Videos in der Galerie */
 .gallery-item img,
 .gallery-item video {
-  width: 100%; /* Die Breite auf 100% setzen */
-  height: 100%; /* Die Höhe auf 100% setzen */
-  object-fit: cover; /* Passt das Bild oder Video an den Container an */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 10px;
 }
 
-.gallery-item:hover {
-  transform: scale(1.05); /* Vergrößert das Bild oder Video beim Hover */
-}
-
-/* Overlay für das ausgewählte Medium */
+/* Media Overlay */
 .media-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9); /* Dunkler Hintergrund */
+  inset: 0;
+  background-color: rgba(0,0,0,0.9);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1100;
 }
-
 .media-overlay-content {
   position: relative;
   max-width: 90%;
@@ -190,98 +189,95 @@ header {
   justify-content: center;
   align-items: center;
 }
-
-/* Für Bilder und Videos im Overlay */
 .overlay-media {
-  width: 100%; /* Passt die Breite auf den Container an */
-  height: auto; /* Höhe bleibt proportional */
-  max-width: 100%; /* Verhindert Übergrößen */
-  max-height: 80vh; /* Maximalhöhe auf 80% des Viewports begrenzen */
-  object-fit: contain; /* Verhindert Verzerrung */
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-/* Schließen-Button */
+/* Close-Button (einheitlich für Bild/Video) */
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #FF8C00; /* Orange Hintergrund */
+  background: #FF8C00;
   color: #000;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   font-size: 1.5rem;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex; justify-content: center; align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
-
-.close-button:hover {
-  transform: scale(1.1);
-  background: #ffa64d; /* Helles Orange beim Hover */
-}
-
-
-
-
-/* Home */
-.home h1 {
-  font-size: 2.5rem;
-  color: #ff6f61;
-}
-
-.home p {
-  font-size: 1.2rem;
-  color: #333;
-}
+.close-button:hover { transform: scale(1.1); background: #ffa64d; }
 
 @media (max-width: 768px) {
-  .home h1 {
-    font-size: 2rem;
-  }
-
-  .home p {
-    font-size: 1rem;
+  .overlay-media { max-height: 60vh; }
+  .close-button {
+    top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1rem;
   }
 }
 
-
-/* About Us */
-/* Allgemeines Styling für den gesamten Abschnitt */
-.about-us {
-  padding: 40px 20px;
-  background-color: #f9f9f9; /* Heller Hintergrund */
-  color: #333; /* Textfarbe */
-  font-family: "Arial", sans-serif;
+/* ============ HOME TYPO ============ */
+.home h1 { font-size: 2.5rem; color: #ff6f61; }
+.home p  { font-size: 1.2rem; color: #333; }
+@media (max-width: 768px) {
+  .home h1 { font-size: 2rem; }
+  .home p  { font-size: 1rem; }
 }
 
-/* Überschrift des gesamten Bereichs */
+/* ============ ABOUT US: Carousel stabil, kein “Aufblasen” ============ */
 .about-us h2 {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #FF8C00; /* Orange Akzent */
+  color: #FF8C00;
   margin-bottom: 30px;
 }
 
-/* Carousel-Container */
+/* Rahmen stabilisieren */
 .carousel-container {
-  margin-bottom: 50px;
+  margin: 0 auto 50px auto;
+  max-width: 1000px;
+  overflow: hidden;           /* verhindert Layoutsprünge */
+  border-radius: 10px;
 }
 
-/* Texte */
+/* fixe Höhe, egal wie Caption/Bild variieren */
+.carousel-container .carousel,
+.carousel-container .carousel-inner,
+.carousel-container .carousel-item {
+  height: 400px;
+}
+
+.carousel-container .carousel .carousel-item img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;          /* schneidet sauber zu */
+  display: block;
+}
+
+/* Caption über Bild, ohne äußeres Layout zu verändern */
+.carousel-container .carousel .carousel-caption {
+  left: 0; right: 0; bottom: 0;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.55));
+  text-align: left;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 .about-text {
   max-width: 800px;
   margin: 0 auto;
   line-height: 1.8;
   font-size: 1.1rem;
 }
-
-/* Überschriften innerhalb der Texte */
 .about-text h4 {
   font-size: 1.8rem;
   font-weight: bold;
@@ -289,297 +285,89 @@ header {
   margin-top: 30px;
   margin-bottom: 15px;
 }
+.about-text p { margin-bottom: 20px; text-align: justify; }
+.about-text ul { margin: 20px 0; padding-left: 20px; list-style: none; }
+.about-text ul li { position: relative; padding-left: 25px; margin-bottom: 10px; font-size: 1rem; }
+.about-text ul li:before { content: "•"; color: #FF8C00; position: absolute; left: 0; top: 0; }
 
-/* Absätze */
-.about-text p {
-  margin-bottom: 20px;
-  text-align: justify;
-}
-
-/* Listen */
-.about-text ul {
-  margin: 20px 0;
-  padding-left: 20px;
-  list-style: none;
-}
-
-.about-text ul li {
-  position: relative;
-  padding-left: 25px;
-  margin-bottom: 10px;
-  font-size: 1rem;
-}
-
-.about-text ul li:before {
-  content: "•";
-  color: #FF8C00; /* Orange Punkt */
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-/* Bilder zwischen den Abschnitten */
-.about-text img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 30px auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsives Design */
-@media (max-width: 768px) {
-  .about-us h2 {
-    font-size: 2rem;
-  }
-
-  .about-text {
-    font-size: 1rem;
-  }
-
-  .about-text h4 {
-    font-size: 1.5rem;
-  }
-}
-/* Styling für den Bild-Container */
+/* Bild-Grid */
 .about-image-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Flexible Spalten */
-  gap: 20px; /* Abstand zwischen den Bildern */
-  max-width: 800px; /* Maximale Breite des Grids */
-  margin: 30px auto; /* Zentriert das Grid */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  max-width: 800px;
+  margin: 30px auto;
 }
-
-/* Styling für die Bilder */
 .about-image-grid img {
-  width: 100%; /* Bilder füllen die Zellen aus */
-  height: 200px; /* Feste Höhe für die Bilder */
-  object-fit: cover; /* Proportionale Anpassung, überschüssige Bereiche werden abgeschnitten */
-  border-radius: 10px; /* Abgerundete Ecken */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
-  transition: transform 0.3s ease; /* Animation beim Hover */
+  width: 100%; height: 200px; object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
 }
+.about-image-grid img:hover { transform: scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
 
-/* Hover-Effekt */
-.about-image-grid img:hover {
-  transform: scale(1.05); /* Vergrößerung beim Hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stärkerer Schatten beim Hover */
-}
-
-/* Styling für den Video-Container */
+/* Video-Wrapper */
 .about-video-container {
   position: relative;
-  width: 100%; /* Breite des Containers */
-  max-width: 800px; /* Maximale Breite für das Video */
-  aspect-ratio: 16 / 9; /* 16:9 Seitenverhältnis */
-  margin: 30px auto; /* Zentriert den Container */
-  background-color: #000; /* Schwarzer Hintergrund */
-  overflow: hidden; /* Schneidet überstehende Bereiche ab */
-  border-radius: 10px; /* Abgerundete Ecken */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
-}
-
-/* Styling für das Video */
-.about-video-container video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%; /* Video passt sich der Breite des Containers an */
-  height: 100%; /* Höhe des Videos entspricht der Höhe des Containers */
-  object-fit: cover; /* Schneidet das Video passend zu */
-  border-radius: 10px; /* Gleiche Ecken wie der Container */
-}
-
-
-
-
-
-/* Product Details */
-/* Container für Produktdetails */
-.product-details-container {
-  display: flex; /* Horizontale Anordnung */
-  gap: 20px; /* Abstand zwischen Bild und Text */
-  align-items: flex-start; /* Vertikale Ausrichtung oben */
-  margin: 2rem 0; /* Außenabstand */
-}
-
-/* Styling für das Produktbild */
-.product-image {
-  flex: 2; /* Bild nimmt mehr Platz ein */
-  max-width: 100%; /* Füllt den verfügbaren Platz */
-  height: 500px; /* Feste Höhe für das Bild */
-  object-fit: cover; /* Bild füllt den Bereich ohne Verzerrung */
-  border-radius: 10px; /* Abgerundete Ecken */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
-}
-
-/* Styling für den Textbereich */
-.product-details {
-  flex: 3; /* Textbereich nimmt etwas mehr Platz ein */
-  background-color: #fef6f6; /* Leichtes Rosa */
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Überschriften und Texte */
-.product-details h1 {
-  color: #ff6f61;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.product-details h4 {
-  color: #444;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-
-.product-details p {
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-/* Buttons */
-.product-details button {
-  background-color: #ff6f61;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px; /* Abstand zwischen Buttons */
-}
-
-.product-details button:hover {
-  background-color: #e94e3d;
-}
-
-
-/* Footer */
-.footer-section {
-  margin: 10px;
-  text-align: left;
-  flex: 1;
-  min-width: 150px; /* Mindestbreite für die Abschnitte */
-}
-
-.footer-section h3 {
-  margin-bottom: 5px;
-  color: #FF8C00;
-  font-size: 1rem;
-}
-
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex; /* Horizontale Anordnung */
-  gap: 15px; /* Abstand zwischen den Links */
-  align-items: center;
-}
-
-.footer-section ul li {
-  position: relative;
-  display: inline-block;
-  padding: 0 10px;
-}
-
-.footer-section ul li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 1px;
-  background-color: #fff; /* Weiße Trennlinie */
-  opacity: 0.5; /* Transparenz für dezente Darstellung */
-}
-
-.footer-section ul li a {
-  text-decoration: none;
-  color: #FF8C00; /* Orange Links */
-  font-weight: bold;
-}
-
-.footer-section ul li a:hover {
-  text-decoration: underline;
-  color: #ffa64d; /* Hellere Orange beim Hover */
-}
-
-.footer {
-  position: fixed; /* Footer bleibt am unteren Rand fixiert */
-  bottom: 0; /* Positioniert den Footer unten */
-  left: 0;
-  width: 100%; /* Breite über die gesamte Seite */
+  width: 100%; max-width: 800px; aspect-ratio: 16/9;
+  margin: 30px auto;
   background-color: #000;
-  color: #fff;
-  padding: 20px;
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  font-family: Arial, sans-serif;
-  display: flex; /* Flexbox für horizontale Anordnung */
-  justify-content: space-between; /* Gleichmäßiger Abstand zwischen den Abschnitten */
-  align-items: center;
-  flex-wrap: wrap; /* Zeilenumbruch bei kleinen Bildschirmen */
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.about-video-container video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border-radius: 10px;
 }
 
-/* Responsive Anpassung */
 @media (max-width: 768px) {
-  .footer {
-    flex-direction: column; /* Vertikale Anordnung bei kleinen Bildschirmen */
-    text-align: center;
-  }
-
-  .footer-section ul {
-    flex-direction: column; /* Links untereinander bei kleinen Bildschirmen */
-    gap: 10px; /* Abstand zwischen Links */
-  }
-
-  .footer-section ul li:not(:last-child)::after {
-    content: none; /* Entfernt Trennlinien auf kleinen Bildschirmen */
-  }
+  .about-us h2 { font-size: 2rem; }
+  .about-text { font-size: 1rem; }
+  .about-text h4 { font-size: 1.5rem; }
+  .carousel-container .carousel,
+  .carousel-container .carousel-inner,
+  .carousel-container .carousel-item { height: 280px; }
 }
 
-/* Cart */
-.cart-container h2 {
-  color: #ff6f61;
-  text-align: center;
+/* ============ PRODUCT DETAILS ============ */
+.product-details-container {
+  display: flex; gap: 20px; align-items: flex-start; margin: 2rem 0;
+}
+.product-image {
+  flex: 2; max-width: 100%; height: 500px; object-fit: cover;
+  border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.product-details {
+  flex: 3; background-color: #fef6f6; padding: 2rem;
+  border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.product-details h1 { color: #ff6f61; font-size: 2rem; margin-bottom: 1rem; }
+.product-details h4 { color: #444; font-size: 1.2rem; margin-bottom: 1rem; }
+.product-details p  { line-height: 1.6; margin-bottom: 1rem; }
+.product-details button {
+  background-color: #ff6f61; color: #fff; border: none;
+  padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; margin-right: 10px;
+}
+.product-details button:hover { background-color: #e94e3d; }
+
+@media (max-width: 992px) {
+  .product-details-container { flex-direction: column; }
+  .product-image { height: 360px; }
 }
 
-.cart-item {
-  margin: 1rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  padding: 0.5rem 0;
-}
-
-.cart-item button {
-  background-color: #ff6f61;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.cart-item button:hover {
-  background-color: #e94e3d;
-}
+/* ============ DRINKS GRID ============ */
 .drinks-container {
   padding: 2rem;
-  background-color: #fbe8d3; /* Soft teal */
-  width: 100%; /* Full width */
+  background-color: #fbe8d3;
+  width: 100%;
 }
 
 .drinks-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  width: 100%; /* Full width */
+  width: 100%;
 }
 
 .drink-card {
@@ -590,58 +378,42 @@ header {
   background-color: #fff;
   transition: box-shadow 0.3s;
 }
-
-.drink-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+.drink-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
 .quantity-input {
-  width: 50px;
-  margin: 0.5rem;
-  padding: 0.2rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 50px; margin: 0.5rem; padding: 0.2rem;
+  border: 1px solid #ccc; border-radius: 4px;
 }
-
 .drink-card button {
-  background-color: #ff6f61; /* Warm coral */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  background-color: #ff6f61; color: #fff; border: none; border-radius: 4px;
+  padding: 0.5rem 1rem; cursor: pointer; transition: background-color 0.3s;
 }
+.drink-card button:hover { background-color: #ff9f8f; }
 
-.drink-card button:hover {
-  background-color: #ff9f8f; /* Light coral */
-}
-
-/* Responsive Styles */
 @media (max-width: 768px) {
-  .drinks-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .drink-card {
-    padding: 1rem 0.5rem;
-  }
-
-  .quantity-input {
-    width: 40px;
-  }
+  .drinks-grid { grid-template-columns: repeat(2, 1fr); }
+  .drink-card { padding: 1rem 0.5rem; }
+  .quantity-input { width: 40px; }
 }
-
 @media (max-width: 480px) {
-  .drinks-grid {
-    grid-template-columns: 1fr;
-  }
+  .drinks-grid { grid-template-columns: 1fr; }
 }
-.cart-container {
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+
+/* ============ CART LISTS ============ */
+.cart-container h2 {
+  color: #ff6f61;
+  text-align: center;
 }
+
+.cart-item {
+  margin: 1rem 0; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid #ccc; padding: 0.5rem 0;
+}
+.cart-item button {
+  background-color: #ff6f61; color: #fff; border: none;
+  padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;
+}
+.cart-item button:hover { background-color: #e94e3d; }
 
 .list-grid {
   display: grid;
@@ -649,383 +421,215 @@ header {
   gap: 1rem;
   position: relative;
 }
-
 .list-card {
-  background-color: #ff6f61;
-  color: white;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, all 0.3s ease-in-out;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
+  background-color: #ff6f61; color: #fff; border-radius: 8px; padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  cursor: pointer; text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative; z-index: 1;
 }
+.list-card:not(.expanded):hover { transform: translateY(-5px); box-shadow: 0 6px 10px rgba(0,0,0,0.2); }
+.list-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
 
-.list-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-/* Stil für die Karte, wenn die Liste geöffnet ist */
 .list-card.expanded {
-  background-color: #ff6f61;
-  color: white;
-  z-index: 10;
-  padding: 2rem;
-  width: 50vw; /* Die Karte nimmt nun 50% der Bildschirmbreite ein */
-  height: auto; /* Höhe an den Inhalt anpassen */
-  max-height: none; /* Keine Begrenzung der Höhe */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  overflow-y: auto; /* Ermöglicht Scrollen, wenn der Inhalt zu groß wird */
-  transform: scale(1); /* Verhindert Verzerrung */
-  box-sizing: border-box; /* Verhindert, dass Padding die Gesamtbreite beeinflusst */
+  z-index: 10; padding: 2rem; width: 50vw; height: auto; max-height: none;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  overflow-y: auto; transform: scale(1); box-sizing: border-box;
 }
+.list-content { margin-top: 1rem; text-align: left; padding: 1rem; overflow-y: auto; }
 
-
-
-/* Inhalt der Liste */
-.list-content {
-  margin-top: 1rem;
-  text-align: left;
-  padding: 1rem; /* Padding für mehr Platz */
-  overflow-y: auto; /* Scrollen, falls notwendig */
-}
-
-/* Stil für die Karte (nicht erweitert) */
-.list-card {
-  background-color: #ff6f61;
-  color: white;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, all 0.3s ease-in-out;
-  position: relative;
-  z-index: 1;
-}
-
-/* Hover-Effekt für die Liste */
-.list-card:not(.expanded):hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Weitere Stile für den Button "Close" und neue Listen */
 .new-list-card {
-  background-color: #ffe5b4;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  background-color: #ffe5b4; color: #333;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
+.new-list-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
 
-.new-list-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-/*Payment form*/
+/* ============ PAYMENT FORM ============ */
 .payment-form {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  max-width: 500px; margin: 40px auto; padding: 20px;
+  background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   color: #333;
 }
-
-.payment-form h2 {
-  text-align: center;
-  color: #FF8C00;
-  margin-bottom: 20px;
-  font-size: 1.8em;
-}
-
-.payment-form form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.payment-form label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
-  color: #555;
-}
-
+.payment-form h2 { text-align: center; color: #FF8C00; margin-bottom: 20px; font-size: 1.8em; }
+.payment-form form { display: flex; flex-direction: column; gap: 15px; }
+.payment-form label { font-weight: bold; margin-bottom: 5px; display: block; color: #555; }
 .payment-form input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1em;
+  width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1em;
+}
+.payment-form input:focus { border-color: #FF8C00; outline: none; box-shadow: 0 0 5px rgba(255,140,0,0.5); }
+.payment-form .payment-total { margin-top: 20px; font-size: 1.2em; text-align: center; font-weight: bold; color: #333; }
+.payment-form .payment-total h3 { color: #FF8C00; margin: 0; }
+.payment-form button {
+  padding: 12px 20px; font-size: 1em; font-weight: bold; border: none; border-radius: 5px; cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.payment-form button[type="submit"] { background-color: #FF8C00; color: #fff; }
+.payment-form button[type="submit"]:hover { background-color: #e67e00; }
+.payment-form button[type="button"] { background-color: #f0f0f0; color: #333; margin-top: 10px; }
+.payment-form button[type="button"]:hover { background-color: #e0e0e0; }
+
+/* ============ FOOTER (fixed oder statisch) ============ */
+/* Wenn du den Footer fixed behalten willst, lass die body padding-bottom oben stehen */
+.footer {
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  border-top: 1px solid #FF8C00;
+  font-size: 0.9em;
+
+  /* wähle EINE Variante: fixed ODER statisch */
+  position: fixed; bottom: 0; left: 0; width: 100%;
+  /* Für statisch stattdessen:
+     position: static;
+  */
+
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+  z-index: 1000;
+}
+.footer-section { margin: 10px; text-align: left; flex: 1; min-width: 150px; }
+.footer-section h3 { margin-bottom: 5px; color: #FF8C00; font-size: 1rem; }
+.footer-section ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 15px; align-items: center; }
+.footer-section ul li { position: relative; display: inline-block; padding: 0 10px; }
+.footer-section ul li:not(:last-child)::after {
+  content: ""; position: absolute; right: 0; top: 0; height: 100%; width: 1px; background-color: #fff; opacity: 0.5;
+}
+.footer-section ul li a { text-decoration: none; color: #FF8C00; font-weight: bold; }
+.footer-section ul li a:hover { text-decoration: underline; color: #ffa64d; }
+.footer-section p { margin: 5px 0; line-height: 1.5; color: #fff; }
+.footer-section p a { color: #FF8C00; text-decoration: none; }
+.footer-section p a:hover { color: #ffa64d; }
+
+@media (max-width: 768px) {
+  .footer { flex-direction: column; text-align: center; }
+  .footer-section ul { flex-direction: column; gap: 10px; }
+  .footer-section ul li:not(:last-child)::after { content: none; }
+}
+/* === NAVBAR FULL-BLEED, auch wenn sie in einem begrenzten Wrapper steckt === */
+.navbar,
+.navbar-outer {                    /* egal welche Klasse du gerade nutzt */
+  width: 100vw;                    /* volle Viewport-Breite */
+  margin-left: calc(50% - 50vw);   /* links rausziehen */
+  margin-right: calc(50% - 50vw);  /* rechts rausziehen */
   box-sizing: border-box;
 }
 
-.payment-form input:focus {
-  border-color: #FF8C00;
-  outline: none;
-  box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+/* Scrollbar-bedingtes „1vw“-Wackeln verhindern (kein horizontales Scrollen) */
+html, body {
+  overflow-x: clip;                /* moderner als hidden; verhindert X-Scrollbars */
+}
+/* Band soll i.d.R. 80% breit sein,
+   aber nie schmaler als die Section selbst */
+:root{
+  --band-radius: 16px;
+  --band-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-.payment-form .payment-total {
-  margin-top: 20px;
-  font-size: 1.2em;
-  text-align: center;
-  font-weight: bold;
-  color: #333;
-}
-
-.payment-form .payment-total h3 {
-  color: #FF8C00;
-  margin: 0;
-}
-
-.payment-form button {
-  padding: 12px 20px;
-  font-size: 1em;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.payment-form button[type="submit"] {
-  background-color: #FF8C00;
-  color: #fff;
-}
-
-.payment-form button[type="submit"]:hover {
-  background-color: #e67e00;
-}
-
-.payment-form button[type="button"] {
-  background-color: #f0f0f0;
-  color: #333;
-  margin-top: 10px;
-}
-
-.payment-form button[type="button"]:hover {
-  background-color: #e0e0e0;
-}
-/*Footer*/
-.footer {
-  background-color: #000; /* Schwarzer Hintergrund */
-  padding: 20px;
-  text-align: center;
-  border-top: 1px solid #FF8C00; /* Orange Akzent */
-  font-size: 0.9em;
-  color: #fff; /* Weiße Schrift */
-}
-
-.footer-section {
-  margin-bottom: 15px;
-}
-
-.footer-section h3 {
-  font-size: 1.2em;
-  color: #FF8C00; /* Orange Akzent für Überschriften */
-  margin-bottom: 10px;
-}
-
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-section ul li {
-  margin: 5px 0;
-}
-
-.footer-section ul li a {
-  text-decoration: none;
-  color: #FF8C00; /* Orange Links */
-}
-
-.footer-section ul li a:hover {
-  color: #ffa64d; /* Hellerer Orange-Ton beim Hover */
-}
-
-.footer-section p {
-  margin: 5px 0;
-  line-height: 1.5;
-  color: #fff; /* Weiße Schrift für Text */
-}
-
-.footer-section p a {
-  color: #FF8C00; /* Orange Links innerhalb von Paragraphen */
-  text-decoration: none;
-}
-
-.footer-section p a:hover {
-  color: #ffa64d; /* Hellerer Orange-Ton beim Hover */
-}
-
-/*LegalPage*/
-.legal-page {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #000; /* Schwarzer Hintergrund */
-  color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.legal-nav ul {
-  display: flex;
-  justify-content: space-around;
-  list-style: none;
-  padding: 0;
-  margin-bottom: 20px;
-}
-
-.legal-nav ul li a {
-  color: #FF8C00;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.legal-nav ul li a:hover {
-  background-color: #FF8C00;
-  color: #000;
-}
-
-.legal-content h2 {
-  color: #FF8C00;
-  margin-bottom: 15px;
-}
-
-.legal-content h3 {
-  color: #FF8C00;
-  margin-top: 20px;
-}
-
-.legal-content p, .legal-content ul {
-  line-height: 1.6;
-}
-/*Gallery*/
-/* Container für die Galerie */
-.gallery-container {
-  padding: 20px;
-  background-color: #000; /* Schwarzer Hintergrund */
-  color: #fff;
-}
-
-/* Grid für die Bilder */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Flexibles Raster */
-  gap: 15px;
-}
-
-/* Einzelnes Bild in der Galerie */
-.gallery-item {
+/* Section-Setup (falls noch nicht gesetzt) */
+.home, .about-us, .drinks-container, .cart-container {
   position: relative;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  border-radius: 10px;
-  overflow: hidden;
+  margin-block: 24px;
+  padding: 3rem 1rem;
+  background: transparent;
+  isolation: isolate;   /* wichtig für z-index-Kontext */
 }
 
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 2px solid #FF8C00; /* Orange Akzent */
-  border-radius: 10px;
-  max-height: 200px; /* Maximale Höhe für Grid-Bilder */
-}
-
-.gallery-item:hover {
-  transform: scale(1.05); /* Vergrößerung beim Hover */
-}
-
-/* Vollbildansicht */
-.image-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9); /* Dunkler Overlay-Hintergrund */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 20px; /* Abstand zum Bildschirmrand */
-  overflow: hidden; /* Verhindert Überlauf des Inhalts */
-}
-
-.image-overlay-content {
-  position: relative;
-  max-width: 90%; /* Bild passt sich der Breite des Bildschirms an */
-  max-height: 90%; /* Bild passt sich der Höhe des Bildschirms an */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.image-overlay-content img {
-  width: auto; /* Proportionale Breite */
-  height: auto; /* Proportionale Höhe */
-  max-width: 100%; /* Begrenze die maximale Breite */
-  max-height: 80vh; /* Maximale Höhe auf 80% der Viewport-Höhe beschränkt */
-  border-radius: 10px;
-  border: 2px solid #FF8C00; /* Orange Akzent */
-}
-
-/* Schließen-Button */
-.close-button {
+/* Das farbige Band */
+.home::before,
+.about-us::before,
+.drinks-container::before,
+.cart-container::before {
+  content: "";
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #FF8C00; /* Orange Hintergrund */
-  color: #000;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  top: 0;               /* immer von oben… */
+  bottom: 0;            /* …bis ganz unten der Section (höhenflexibel) */
+  left: 50%;
+  transform: translateX(-50%);
+  /* HIER ist der Trick:
+     Nimm 80vw – aber wenn die Section (100%) breiter ist,
+     passe dich nach oben an. */
+  width: max(80vw, 100%);
+  border-radius: var(--band-radius);
+  box-shadow: var(--band-shadow);
+  z-index: -1;
+  pointer-events: none;
 }
 
-.close-button:hover {
-  transform: scale(1.1);
-  background: #ffa64d; /* Hellere Orange beim Hover */
-}
+/* Farben der Bänder */
+.home::before             { background: #fff7e6; }
+.about-us::before         { background: #f9f9f9; }
+.drinks-container::before { background: #fbe8d3; }
+.cart-container::before   { background: #f0f9ff; }
 
-/* Responsives Verhalten für kleinere Bildschirme */
+/* Falls dein .container das Band „abschneidet“ */
+.container { overflow: visible; }
+
+/* Optional: auf sehr kleinen Screens das Band etwas breiter wirken lassen */
 @media (max-width: 768px) {
-  .image-overlay-content img {
-    max-height: 60vh; /* Maximale Höhe für kleinere Bildschirme */
-  }
-
-  .close-button {
-    top: 10px;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    font-size: 1rem;
+  .home::before,
+  .about-us::before,
+  .drinks-container::before,
+  .cart-container::before {
+    width: max(94vw, 100%);
   }
 }
-/*-----------------*/
 
+/* ==== CART: rechtsbündiges Kachel-Layout mit sauberem Wrap ==== */
+.cart-container .list-grid {
+  display: grid;
+  /* fixe Spaltenbreite: so entstehen echte Kacheln */
+  grid-template-columns: repeat(auto-fit, 260px);
+  gap: 16px;
 
+  /* Breite an dein farbiges Band koppeln und rechtsbündig ausrichten */
+  max-width: min(var(--band-max, 1200px), var(--band-width, 80vw));
+  margin-left: auto;     /* schiebt das Grid nach rechts innerhalb des Bands */
+  margin-right: auto;    /* Band bleibt zentriert – Grid rechts im Band */
+  justify-content: end;  /* Tracks innerhalb des Grids an die rechte Kante */
+  align-content: start;
+  grid-auto-flow: dense; /* füllt Lücken, Create-Tile rutscht nach */
+}
+
+/* Kachel-Grundstil (fixe Breite, keine Streckung) */
+.cart-container .list-card {
+  width: 260px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 1rem;
+  border-radius: 8px;
+  background: #ff6f61;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,.1);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.cart-container .list-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,.15);
+}
+.cart-container .list-card h3 { margin-bottom: .5rem; }
+.cart-container .list-card h4 { margin-bottom: .25rem; }
+
+/* Create-Tile immer zuletzt – erscheint ganz rechts;
+   neue Liste rutscht links daneben. */
+.cart-container .new-list-card {
+  background: #ffe5b4;
+  color: #333;
+  order: 9999;
+}
+
+/* Buttons/Inputs vollbreit im Tile */
+.cart-container .new-list-card .form-control,
+.cart-container .new-list-card .btn {
+  width: 100%;
+}
+
+/* Mobile: schmalere Kacheln, aber weiterhin rechtsbündig */
+@media (max-width: 480px) {
+  .cart-container .list-grid {
+    grid-template-columns: repeat(auto-fit, 220px);
+    gap: 12px;
+  }
+  .cart-container .list-card { width: 220px; min-height: 150px; }
+}
