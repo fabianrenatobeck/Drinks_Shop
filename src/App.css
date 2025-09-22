@@ -633,3 +633,88 @@ html, body {
   }
   .cart-container .list-card { width: 220px; min-height: 150px; }
 }
+/* Avatar in Navbar */
+.nav-avatar-btn {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  margin-left: 12px;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-avatar-btn .avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff; /* Randfarbe sichtbar auf Orange */
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+.nav-avatar-btn .avatar img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.nav-avatar-btn .avatar-initial {
+  font-weight: 700; color: #ff6f61;
+}
+.nav-avatar-btn.mobile { width: 100%; justify-content: flex-start; gap: 8px; }
+.nav-avatar-btn .mobile-label { color: #fff; font-weight: 600; }
+
+/* Auth / Account Seiten */
+.auth-page, .account-page {
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 16px;
+}
+.auth-card, .account-card {
+  width: 100%; max-width: 560px;
+  background: #fff; color: #333; border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 24px;
+}
+.auth-card h2, .account-card h2 { color: #ff6f61; margin-bottom: 12px; }
+
+.auth-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+.auth-tab {
+  flex: 1; border: 1px solid #eee; background: #fafafa; padding: 10px; border-radius: 8px; cursor: pointer;
+  font-weight: 600;
+}
+.auth-tab.active { background: #ffe5b4; border-color: #ffce8a; }
+
+.auth-form .form-row,
+.account-form .form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.auth-form input,
+.account-form input {
+  border: 1px solid #ddd; border-radius: 8px; padding: 10px; font-size: 14px;
+}
+.btn-primary, .btn-secondary, .btn-google, .btn-logout {
+  width: 100%; padding: 12px; border: 0; border-radius: 8px; font-weight: 700; cursor: pointer;
+}
+.btn-primary { background: #ff6f61; color:#fff; }
+.btn-primary:hover { background: #e75649; }
+.btn-secondary { background: #ffe5b4; color: #654321; }
+.btn-secondary:hover { background: #ffd89a; }
+.btn-google { background: #fff; border: 1px solid #ddd; }
+.btn-google:hover { background: #f8f8f8; }
+.btn-logout { background: #111; color: #fff; }
+.btn-logout:hover { background: #333; }
+
+.auth-sep { text-align: center; margin: 12px 0; color: #777; }
+.auth-sep span { background: #fff; padding: 0 8px; }
+.auth-error, .account-msg {
+  background: #ffe9ea; border: 1px solid #ffcdd2; color: #9b1c1f;
+  padding: 8px 10px; border-radius: 8px; margin-bottom: 12px;
+}
+
+.account-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.avatar.large { width: 72px; height: 72px; border: 2px solid #eee; border-radius: 50%; overflow: hidden; background: #fafafa; }
+.avatar.large img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 24px; color: #ff6f61;
+}
+.account-name { font-size: 18px; font-weight: 700; }
+.account-email { color: #666; }
+
+.account-form { margin-top: 16px; }
+.account-form h3 { margin-bottom: 10px; color: #ff6f61; }
+.account-actions { margin-top: 16px; }

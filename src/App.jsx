@@ -1,5 +1,7 @@
+// App.jsx
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import ProductDetails from './components/ProductDetails';
@@ -8,20 +10,25 @@ import Cart from './components/Cart';
 import Gallery from './components/Gallery';
 import AboutUs from './components/AboutUs';
 import Footer from './components/Footer';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Impressum from './components/Impressum';
 import Datenschutz from './components/Datenschutz';
 import AGB from './components/AGB';
 import Widerruf from './components/Widerruf';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { AuthProvider } from './components/AuthContext';
+import AuthPage from './components/AuthPage';
+import Account from './components/Account';
 
 const App = () => {
     const drinksList = [
+        // ... deine bestehenden Produkte unverändert ...
         {
             id: 1,
             name: 'Limeli Original',
             price: 12.99,
-            description: 'Eine ausgewogene Mischung aus Alpenkräutertee, Honig, Apfelessig und Traubensaft für jeden Moment.',
+            description: 'Eine ausgewogene Mischung ...',
             image: '../assets/limeli-original.png',
             details: {
                 articleNumber: '100101',
@@ -35,7 +42,6 @@ const App = () => {
                 contents: 'Alpenkräutertee, Honig, Apfelessig, Traubensaft',
             },
         },
-        // Weitere Getränke hier ...
         {
             id: 2,
             name: 'Limeli Winter Edition',
@@ -216,7 +222,7 @@ const App = () => {
     };
 
     const createNewList = (listName) => {
-        if (!listName.trim()) return; // Leere Liste nicht erstellen
+        if (!listName.trim()) return;
         setLists((prevLists) => [...prevLists, { name: listName.trim(), items: [] }]);
     };
 
@@ -238,55 +244,55 @@ const App = () => {
             )
         );
     };
+
     const imageUrls = drinksList.map((drink) => drink.image);
 
-
-
     return (
+        <AuthProvider>
+            <Router>
+                <Navbar />
+                <div className="container">
+                    <Routes>
+                        <Route path="/" element={<Home drinks={drinksList} />} />
+                        <Route
+                            path="/product/:id"
+                            element={
+                                <ProductDetails
+                                    drinks={drinksList}
+                                    addToCart={addToCart}
+                                    lists={lists}
+                                    createNewList={createNewList}
+                                />
+                            }
+                        />
+                        <Route path="/drinks" element={<Drinks drinks={drinksList} addToCart={addToCart} />} />
+                        <Route
+                            path="/cart"
+                            element={
+                                <Cart
+                                    lists={lists}
+                                    removeFromCart={removeFromCart}
+                                    createNewList={createNewList}
+                                />
+                            }
+                        />
+                        <Route path="/gallery" element={<Gallery images={imageUrls} />} />
+                        <Route path="/aboutUs" element={<AboutUs />} />
 
+                        {/* Legal */}
+                        <Route path="/legal/impressum" element={<Impressum />} />
+                        <Route path="/legal/datenschutz" element={<Datenschutz />} />
+                        <Route path="/legal/agb" element={<AGB />} />
+                        <Route path="/legal/widerruf" element={<Widerruf />} />
 
-        <Router>
-            <Navbar />
-            <div className="container">
-                <Routes>
-                    <Route path="/" element={<Home drinks={drinksList} />} />
-                    <Route
-                        path="/product/:id"
-                        element={
-                            <ProductDetails
-                                drinks={drinksList}
-                                addToCart={addToCart}
-                                lists={lists}
-                                createNewList={createNewList}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/drinks"
-                        element={<Drinks drinks={drinksList} addToCart={addToCart} />}
-                    />
-                    <Route
-                        path="/cart"
-                        element={
-                            <Cart
-                                lists={lists}
-                                removeFromCart={removeFromCart}
-                                createNewList={createNewList} // Hier ist der Fix
-                            />
-                        }
-                    />
-                    <Route path="/gallery" element={<Gallery />} />
-                    <Route path="/aboutUs" element={<AboutUs />} />
-                    <Route path="/legal/impressum" element={<Impressum />} />
-                    <Route path="/legal/datenschutz" element={<Datenschutz />} />
-                    <Route path="/legal/agb" element={<AGB />} />
-                    <Route path="/legal/widerruf" element={<Widerruf />} />
-                    <Route path="/gallery" element={<Gallery images={imageUrls} />} />
-
-                </Routes>
-            </div>
-            <Footer />
-        </Router>
+                        {/* Auth */}
+                        <Route path="/auth" element={<AuthPage />} />
+                        <Route path="/account" element={<Account />} />
+                    </Routes>
+                </div>
+                <Footer />
+            </Router>
+        </AuthProvider>
     );
 };
 

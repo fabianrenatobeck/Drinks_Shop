@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "./AuthContext";
 
 function Navbar() {
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
