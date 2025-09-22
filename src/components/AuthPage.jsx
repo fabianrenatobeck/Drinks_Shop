@@ -1,120 +1,121 @@
-// AuthContext.jsx
-import React, { createContext, useContext, useEffect, useState } from "react";
+// AuthPage.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
-const AuthContext = createContext(null);
+export default function AuthPage() {
+    const { loginWithEmail, loginWithGoogle, registerWithEmail } = useAuth();
+    const [mode, setMode] = useState("login"); // "login" | "register"
+    const [email, setEmail] = useState("");
+    const [displayName, setDisplayName] = useState("");
+    const [password, setPassword] = useState("");
+    const [busy, setBusy] = useState(false);
+    const [err, setErr] = useState("");
+    const navigate = useNavigate();
 
-const STORAGE_KEY = "limeli_auth_user_v1";
-
-function loadUser() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : null;
-    } catch {
-        return null;
-    }
-}
-
-function saveUser(user) {
-    try {
-        if (user) localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-        else localStorage.removeItem(STORAGE_KEY);
-    } catch {}
-}
-
-export function AuthProvider({ children }) {
-    const [user, setUser] = useState(loadUser());
-
-    useEffect(() => {
-        saveUser(user);
-    }, [user]);
-
-    // --- Mock API (später hier echte API/OAuth andocken) ---
-    const loginWithEmail = async ({ email, password }) => {
-        // TODO: Replace with backend call
-        if (!email || !password) throw new Error("Bitte E-Mail & Passwort eingeben.");
-        const mockUser = {
-            uid: "local-" + email,
-            email,
-            displayName: email.split("@")[0],
-            photoURL: null, // Base64 oder remote URL
-            provider: "password",
-        };
-        setUser(mockUser);
-        return mockUser;
-    };
-
-    const registerWithEmail = async ({ email, password, displayName }) => {
-        // TODO: Replace with backend call
-        if (!email || !password) throw new Error("Bitte E-Mail & Passwort eingeben.");
-        const mockUser = {
-            uid: "local-" + email,
-            email,
-            displayName: displayName || email.split("@")[0],
-            photoURL: null,
-            provider: "password",
-        };
-        setUser(mockUser);
-        return mockUser;
-    };
-
-    const loginWithGoogle = async () => {
-        // TODO: Replace with Google OAuth
-        const mockUser = {
-            uid: "google-123",
-            email: "you@example.com",
-            displayName: "Google User",
-            photoURL: null,
-            provider: "google",
-        };
-        setUser(mockUser);
-        return mockUser;
-    };
-
-    const updateProfile = async ({ displayName, photoFile }) => {
-        let photoURL = user?.photoURL || null;
-
-        if (photoFile) {
-            photoURL = await fileToBase64(photoFile); // lokal speichern
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        setErr("");
+        setBusy(true);
+        try {
+            if (mode === "login") {
+                await loginWithEmail({ email, password });
+            } else {
+                await registerWithEmail({ email, password, displayName });
+            }
+            navigate("/account");
+        } catch (error) {
+            setErr(error.message || "Fehler bei der Anmeldung.");
+        } finally {
+            setBusy(false);
         }
-        const updated = { ...user, displayName: displayName ?? user?.displayName, photoURL };
-        setUser(updated);
-        return updated;
     };
 
-    const changePassword = async (_oldPwd, _newPwd) => {
-        // TODO: Replace with backend call
-        await new Promise((r) => setTimeout(r, 400));
-        return true;
+    const onGoogle = async () => {
+        setErr("");
+        setBusy(true);
+        try {
+            await loginWithGoogle();
+            navigate("/account");
+        } catch (error) {
+            setErr(error.message || "Google-Anmeldung fehlgeschlagen.");
+        } finally {
+            setBusy(false);
+        }
     };
 
-    const logout = async () => {
-        setUser(null);
-    };
+    return (
+        <div className="auth-page">
+            <div className="auth-card">
+                <h2>{mode === "login" ? "Anmelden" : "Registrieren"}</h2>
 
-    const value = {
-        user,
-        isAuthenticated: !!user,
-        loginWithEmail,
-        registerWithEmail,
-        loginWithGoogle,
-        updateProfile,
-        changePassword,
-        logout,
-    };
+                <div className="auth-toggle">
+                    <button
+                        className={`auth-tab ${mode === "login" ? "active" : ""}`}
+                        onClick={() => setMode("login")}
+                        type="button"
+                    >
+                        Login
+                    </button>
+                    <button
+                        className={`auth-tab ${mode === "register" ? "active" : ""}`}
+                        onClick={() => setMode("register")}
+                        type="button"
+                    >
+                        Registrieren
+                    </button>
+                </div>
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+                {err && <div className="auth-error">{err}</div>}
 
-export function useAuth() {
-    return useContext(AuthContext);
-}
+                <form onSubmit={onSubmit} className="auth-form">
+                    {mode === "register" && (
+                        <div className="form-row">
+                            <label>Anzeige-Name</label>
+                            <input
+                                type="text"
+                                placeholder="Dein Name"
+                                value={displayName}
+                                onChange={(e) => setDisplayName(e.target.value)}
+                            />
+                        </div>
+                    )}
 
-// helpers
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = (e) => reject(e);
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(file);
-    });
+                    <div className="form-row">
+                        <label>E-Mail</label>
+                        <input
+                            type="email"
+                            placeholder="you@mail.ch"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete="username"
+                        />
+                    </div>
+
+                    <div className="form-row">
+                        <label>Passwort</label>
+                        <input
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete={mode === "login" ? "current-password" : "new-password"}
+                        />
+                    </div>
+
+                    <button className="btn-primary" disabled={busy}>
+                        {busy ? "Bitte warten…" : mode === "login" ? "Einloggen" : "Registrieren"}
+                    </button>
+                </form>
+
+                <div className="auth-sep">
+                    <span>oder</span>
+                </div>
+
+                <button className="btn-google" onClick={onGoogle} disabled={busy}>
+                    <span className="g-icon">G</span> Mit Google anmelden
+                </button>
+            </div>
+        </div>
+    );
 }
